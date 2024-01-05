@@ -16,8 +16,8 @@ model Post {
   createdAt DateTime @default(now())
   content String?
   published Boolean @default(false)
-  date DateTime
-  image String
+  //date DateTime
+  //image String
   //location Location
   //series
 
