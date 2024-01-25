@@ -5,25 +5,47 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
+    "docker": "docker compose -f docker/compose.yml  up -d",
     "lint": "eslint . --max-warnings 0",
     "start": "next start"
   },
   "dependencies": {
-    "@prisma/client": "^5.7.1",
+    "@hookform/resolvers": "^3.3.4",
+    "@prisma/client": "^5.8.1",
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-dropdown-menu": "^2.0.6",
+    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-popover": "^1.0.7",
+    "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-switch": "^1.0.3",
     "@repo/ui": "workspace:*",
-    "next": "^14.0.3",
+    "@tanstack/react-table": "^8.11.7",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "cmdk": "^0.2.0",
+    "lucide-react": "^0.314.0",
+    "multiparty": "^4.2.3",
+    "next": "^14.1.0",
+    "next-themes": "^0.2.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.49.3",
+    "tailwind-merge": "^2.2.1",
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^14.0.2",
+    "@next/eslint-plugin-next": "^14.1.0",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "^20.9.4",
-    "@types/react": "^18.2.38",
-    "@types/react-dom": "^18.2.17",
-    "eslint": "^8.54.0",
-    "prisma": "^5.7.1",
-    "typescript": "^5.3.2"
+    "@types/node": "^20.11.6",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "autoprefixer": "^10.4.17",
+    "eslint": "^8.56.0",
+    "postcss": "^8.4.33",
+    "prisma": "^5.8.1",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.3.3"
   }
 }

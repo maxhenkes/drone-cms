@@ -1,57 +1,108 @@
-'use client'
-import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
+"use client";
+import React from "react";
+import { Input } from "@/components/ui/input";
+import * as z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+
+const formSchema = z.object({
+  title: z.string().min(2).max(50),
+  content: z.string(),
+  image: z.instanceof(File, { message: "Valid file is required!" }),
+});
 
 export default function Draft() {
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
-  const router = useRouter()
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: "",
+      content: "",
+    },
+  });
 
-  const submitData = async (e: React.SyntheticEvent) => {
-    e.preventDefault()
-    try {
-      const body = { title, content }
-      await fetch(`/api/post`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      })
+  // 2. Define a submit handler.
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    const formData = new FormData();
+    formData.set("file", values.image);
+    formData.set("title", values.title);
+    formData.set("content", values.content);
 
-      router.push('/')
-    } catch (error) {
-      console.error(error)
-    }
+    const fetchOptions = {
+      method: "POST",
+      body: formData,
+    };
+    fetch("/api/post", fetchOptions);
+
+    console.log(values);
   }
 
   return (
-    <>
-      <div>
-        <form onSubmit={submitData}>
-          <h1>Create Draft</h1>
-          <input
-            autoFocus
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Title"
-            type="text"
-            value={title}
+    <div className="rounded-md border container mt-5 py-5">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          encType="multipart/form-data"
+          className="space-y-8"
+        >
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Title</FormLabel>
+                <FormControl>
+                  <Input placeholder="Title..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          <textarea
-            cols={50}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="Content"
-            rows={8}
-            value={content}
+          <FormField
+            control={form.control}
+            name="content"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Content</FormLabel>
+                <FormControl>
+                  <Textarea placeholder="Content..." {...field}></Textarea>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          <input
-            disabled={!content || !title }
-            type="submit"
-            value="Create"
+          <FormField
+            control={form.control}
+            name="image"
+            render={({ field: { value, onChange, ...field } }) => (
+              <FormItem>
+                <FormLabel>Picture</FormLabel>
+                <FormControl>
+                  <Input
+                    type="file"
+                    placeholder="Title..."
+                    {...field}
+                    onChange={(event) => {
+                      onChange(event.target.files[0]);
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          <a href="/">
-            or Cancel
-          </a>
+          <Button type="submit">Submit</Button>
         </form>
-      </div>
-    </>
-  )
+      </Form>
+    </div>
+  );
 }

@@ -16,9 +16,16 @@ model Post {
   createdAt DateTime @default(now())
   content String?
   published Boolean @default(false)
-  //date DateTime
-  //image String
+  image String @default("placeholder")
   //location Location
-  //series
+  group Group? @relation(fields: [groupId], references: [id])
+  groupId Int?
+}
 
+model Group {
+  id Int @id @default(autoincrement())
+  title String
+  displayDate DateTime @db.Date @default(now())
+  createdAt DateTime @default(now())
+  posts Post[]
 }
